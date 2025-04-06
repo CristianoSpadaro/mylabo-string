@@ -23,12 +23,8 @@ jobs: # Lista dei job
       - name: Install dependencies
         run: npm install # Comando per installare le dipendenze
 
-      # --- Step Opzionale di Build ---
-      # Se il progetto ha uno script 'build' in package.json, includere questo step.
-      # Altrimenti, può essere omesso.
-      # - name: Build application (Optional)
-      #   run: npm run build
-      # -----------------------------
+      - name: Build application
+        run: npm run build # Esegue lo script build fittizio
 
   test: # Nome del secondo job
     name: Run Tests # Nome visualizzato
