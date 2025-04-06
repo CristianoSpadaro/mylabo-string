@@ -1,0 +1,51 @@
+name: CI Build and Test # Nome del workflow
+
+on: # Eventi che triggerano il workflow
+  push:
+    branches: [ main ] # O anche altri branch, es. ['main', 'feature/**']
+  pull_request:
+    branches: [ main ]
+
+jobs: # Lista dei job
+  build: # Nome del primo job
+    name: Build # Nome visualizzato nell'UI di GitHub Actions
+    runs-on: ubuntu-latest # Runner da usare
+
+    steps: # Sequenza di passi per il job 'build'
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Azione per scaricare il codice
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4 # Azione per configurare Node.js
+        with:
+          node-version: '20.x' # Specifica la versione di Node.js (usare una LTS)
+
+      - name: Install dependencies
+        run: npm install # Comando per installare le dipendenze
+
+      # --- Step Opzionale di Build ---
+      # Se il progetto ha uno script 'build' in package.json, includere questo step.
+      # Altrimenti, può essere omesso.
+      # - name: Build application (Optional)
+      #   run: npm run build
+      # -----------------------------
+
+  test: # Nome del secondo job
+    name: Run Tests # Nome visualizzato
+    runs-on: ubuntu-latest
+    needs: build # <<<------ Questa è la dipendenza dal job 'build'
+
+    steps: # Sequenza di passi per il job 'test'
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Serve anche qui per avere i file di test
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x' # Stessa versione del job build
+
+      - name: Install dependencies
+        run: npm install # Reinstallare le dipendenze nel nuovo ambiente
+
+      - name: Run tests
+        run: npm test # Comando per eseguire i test (es. Jest)
