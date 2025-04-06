@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage",
+    "build": "echo '>>> Simulating build process...' && mkdir -p dist && echo 'Build output artifact' > dist/build_output.txt && echo '>>> Build simulation complete.'"
   },
   "keywords": [],
   "author": "",
